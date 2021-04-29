@@ -5,6 +5,7 @@ namespace Modules\Exercise03\Http\Controllers;
 use Illuminate\Routing\Controller;
 use Modules\Exercise03\Services\ProductService;
 use Modules\Exercise03\Http\Requests\CheckoutRequest;
+use Modules\Exercise03\Http\Requests\ProductCreateRequest;
 use Modules\Exercise03\Repositories\ProductRepository;
 
 /**
@@ -46,5 +47,14 @@ class ProductController extends Controller
         $discount = $this->productService->calculateDiscount($request->input('total_products'));
 
         return response()->json(['discount' => $discount]);
+    }
+
+    public function store(ProductCreateRequest $request)
+    {
+        $inputs = $request->validated();
+
+        $product = $this->productService->create($inputs);
+
+        return back()->with('product', $product);
     }
 }
